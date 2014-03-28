@@ -1,0 +1,37 @@
+# unity
+Library
+Temp
+*.pidb
+*.unityproj
+*.sln
+*.userprefs
+
+# ignore node.js modules
+node_modules
+.node_modules
+
+# ignore Apple DS Store
+*.DS_Store
+
+# ignore IntelliJ project files
+*.idea
+*.iml
+\#*\#
+
+# ignore log files
+*.log
+
+# ignore swap files
+*.swp
+
+# ignore tags file (I'm trying to get ctags/etags working for JavaScript - Edmond)
+tags
+
+# emacs turds
+*~
+
+# pid files
+*.pid
+
+#
+.coverage_data

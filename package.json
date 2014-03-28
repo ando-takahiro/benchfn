@@ -1,0 +1,21 @@
+{
+  "name": "benchfn",
+  "version": "0.0.0",
+  "description": "a function for instant benchmark",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha"
+  },
+  "keywords": [
+    "benchmark",
+    "browser"
+  ],
+  "author": "takahiro ando",
+  "license": "ISC",
+  "devDependencies": {
+    "mocha": "~1.18.2"
+  },
+  "dependencies": {
+    "microtime": "~0.5.1"
+  }
+}
