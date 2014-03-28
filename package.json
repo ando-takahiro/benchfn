@@ -2,6 +2,7 @@
   "name": "benchfn",
   "version": "0.0.0",
   "description": "a function for instant benchmark",
+  "repository": "git@github.com:ando-takahiro/benchfn.git",
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha"
