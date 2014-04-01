@@ -1,0 +1,38 @@
+<script src='../index.js'></script>
+<script type='text/javascript'>
+    var expected = [200, 0];
+    var count = 0;
+
+    function assert(cond) {
+        if (!cond) {
+            alert('error');
+            throw new Error('assertion faild');
+        }
+    }
+
+    benchfn(
+        [
+            function functionNameIsTestName(done) {
+                //process.nextTick(done);
+                setTimeout(done, 2);
+            },
+            function syncTestIsLikeThis(done) {
+                done();
+            }
+        ],
+        // this function is called when 'done' was called in every function in above list
+        function step(cur, totalMillisecond, tests) {
+            ++count;
+            assert(totalMillisecond >= expected[cur]);
+
+            // 'cur' is 0 based index of function in above list
+            // 'tests' is 1st argument of benchfn(above list)
+            console.log('step:' + tests[cur].name + ':' + totalMillisecond);
+        },
+        function complete(err) {
+            assert(!err);
+            assert(count === 2);
+            console.log('complete');
+        }
+    );
+</script>

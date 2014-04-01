@@ -19,7 +19,7 @@ describe('example', function () {
             // this function is called when 'done' was called in every function in above list
             function step(cur, totalMillisecond, tests) {
                 ++count;
-                assert(totalMillisecond > expected[cur]);
+                assert(totalMillisecond >= expected[cur]);
 
                 // 'cur' is 0 based index of function in above list
                 // 'tests' is 1st argument of benchfn(above list)
