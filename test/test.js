@@ -34,4 +34,22 @@ describe('example', function () {
         );
         // you can configure like bnechfn.TEST = 200 to change repeat count.
     });
+
+    it('async step', function (done) {
+        var b = +(new Date());
+        benchfn(
+            [
+                function nothing(done) {
+                    done();
+                }
+            ],
+            function step(cur, totalMillisecond, tests, done) {
+                setTimeout(done, 1);
+            },
+            function complete(err) {
+                assert(+(new Date()) - b >= 1);
+                done();
+            }
+        );
+    });
 });

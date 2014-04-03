@@ -24,6 +24,17 @@
         var DELAY = benchfn.DELAY;
         var results = [];
         function stepTest(current) {
+            function afterStepReport() {
+                ++current;
+                if (current < tests.length) {
+                    setTimeout(function () {
+                        stepTest(current);
+                    }, DELAY);
+                } else {
+                    done(null, results);
+                }
+            }
+
             function doNext(sum, count) {
                 ++count;
                 if (count < TESTS) {
@@ -31,15 +42,12 @@
                         step(count, sum);
                     }, DELAY);
                 } else {
-                    stepReport(current, sum, tests);
                     results.push(sum);
-                    ++current;
-                    if (current < tests.length) {
-                        setTimeout(function () {
-                            stepTest(current);
-                        }, DELAY);
+                    if (stepReport.length === 3) {
+                        stepReport(current, sum, tests);
+                        afterStepReport();
                     } else {
-                        done(null, results);
+                        stepReport(current, sum, tests, afterStepReport);
                     }
                 }
             }
