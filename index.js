@@ -19,63 +19,73 @@
         }
     }
 
-    var benchfn = exports = function benchfn(tests, stepReport, done) {
-        var TESTS = benchfn.TESTS;
+    var benchfn = exports = function benchfn(suites, stepReport, done) {
+        var REPEAT = benchfn.REPEAT;
         var DELAY = benchfn.DELAY;
         var results = [];
-        function stepTest(current) {
+        function suite(current) {
             function afterStepReport() {
                 ++current;
-                if (current < tests.length) {
+                if (current < suites.length) {
                     setTimeout(function () {
-                        stepTest(current);
+                        suite(current);
                     }, DELAY);
                 } else {
                     done(null, results);
                 }
             }
 
-            function doNext(sum, count) {
+            function next(sum, count) {
                 ++count;
-                if (count < TESTS) {
+                if (count < REPEAT) {
                     setTimeout(function () {
-                        step(count, sum);
+                        run(count, sum);
                     }, DELAY);
                 } else {
                     results.push(sum);
                     if (stepReport.length === 3) {
-                        stepReport(current, sum, tests);
+                        stepReport(current, sum, suites);
                         afterStepReport();
                     } else {
-                        stepReport(current, sum, tests, afterStepReport);
+                        stepReport(current, sum, suites, afterStepReport);
                     }
                 }
             }
 
-            function step(count, sum) {
+            function run(count, sum) {
+                var begin, end;
+
+                function stopwatch() {
+                    end = now();
+                }
+
+                function doneSuite(e) {
+                    if (e) {
+                        done(e);
+                        return;
+                    }
+                    if (end === undefined) {
+                        stopwatch();
+                    }
+                    next(sum + end - begin, count);
+                }
+                doneSuite.stopwatch = stopwatch;
+
                 try {
-                    var begin = now();
-                    tests[current](function (e) {
-                        var end = now();
-                        if (e) {
-                            done(e);
-                            return;
-                        }
-                        doNext(sum + end - begin, count);
-                    });
+                    begin = now();
+                    suites[current](doneSuite);
                 } catch (e) {
                     done(e);
                 }
             }
 
-            step(0, 0);
-
+            run(0, 0);
         }
 
-        stepTest(0);
+        suite(0);
     };
 
-    benchfn.TESTS = 100;
+    benchfn.REPEAT = 100;
     benchfn.DELAY = 0;
     //</YOUR CODE>
 

@@ -52,4 +52,27 @@ describe('example', function () {
             }
         );
     });
+
+    it('stopwatch', function (done) {
+        var b = +(new Date());
+        benchfn(
+            [
+                function benchSyncButWaitAsyncBeforeDone(done) {
+                    setTimeout(function () {
+                        done();
+                    }, 1);
+                    done.stopwatch();
+                }
+            ],
+            function step(cur, totalMillisecond, tests) {
+                // totalMillisecond should be much smaller than benchfn.REPEAT
+                assert(totalMillisecond < benchfn.REPEAT);
+            },
+            function complete(err) {
+                var duration = +(new Date()) - b;
+                assert(duration >= benchfn.REPEAT);
+                done();
+            }
+        );
+    });
 });
